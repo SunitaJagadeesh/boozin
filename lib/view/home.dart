@@ -1,6 +1,8 @@
+import 'package:boozin/dark_mode/dark_theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:provider/provider.dart';
 import 'dart:async';
 import 'pill_box.dart';
 
@@ -71,6 +73,9 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    final themeChange = Provider.of<DarkThemeProvider>(context);
+
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         //backgroundColor: Colors.white,
@@ -91,6 +96,24 @@ class _HomeState extends State<Home> {
               ),
             ),
             actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                child: Row(
+                  children: [
+                    Text('Dark Theme',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),),
+                    Checkbox(
+                        value: themeChange.darkTheme,
+                        checkColor: Colors.black,
+                        activeColor: Colors.grey.shade50,
+                        onChanged: (bool value) {
+                          themeChange.darkTheme = value;
+                        }),
+                  ],
+                ),
+              ),
               Stack(
                 children: <Widget>[
                   Padding(
@@ -132,7 +155,7 @@ class _HomeState extends State<Home> {
                         )
                       : Container()
                 ],
-              )
+              ),
             ],
           ),
         ),
