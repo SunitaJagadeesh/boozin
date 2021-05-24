@@ -1,9 +1,6 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:boozin/view/home.dart';
-import 'package:boozin/view/splash01.dart';
-import 'package:boozin/view/splash03.dart';
 import 'package:flutter/material.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 class Splash02 extends StatefulWidget {
   @override

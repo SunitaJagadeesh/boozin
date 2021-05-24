@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
-
+import 'package:pedometer/pedometer.dart';
+import 'dart:async';
 import 'pill_box.dart';
 
 class Home extends StatefulWidget {
@@ -10,9 +11,63 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int counter = 0;
+  Stream<StepCount> _stepCountStream;
+  Stream<PedestrianStatus> _pedestrianStatusStream;
+  String _status = '0', _steps = '0';
+
+  void onStepCount(StepCount event) {
+    /// Handle step count changed
+    print(event);
+    setState(() {
+      _steps = event.steps.toString();
+    });
+  }
+
+  void onPedestrianStatusChanged(PedestrianStatus event) {
+    /// Handle status changed
+    print(event);
+    setState(() {
+      _status = event.status;
+    });
+  }
+
+  void onPedestrianStatusError(error) {
+    /// Handle the error
+    print('onPedestrianStatusError: $error');
+    setState(() {
+      _status = 'Pedestrian Status not available';
+    });
+    print(_status);
+  }
+
+  void onStepCountError(error) {
+    /// Handle the error
+    print('onStepCountError: $error');
+    setState(() {
+      _steps = 'Step Count not available';
+    });
+  }
+
+  Future<void> initPlatformState() async {
+    _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
+    _pedestrianStatusStream
+        .listen(onPedestrianStatusChanged)
+        .onError(onPedestrianStatusError);
+
+    _stepCountStream = Pedometer.stepCountStream;
+    _stepCountStream.listen(onStepCount).onError(onStepCountError);
+
+    if (!mounted) return;
+  }
 
   /// onPressed action need to be added for increment of the counter
   /// https://medium.com/@ayushbherwani/notification-badge-in-flutter-c776a6194936#:~:text=The%20variable%20counter%20will%20keep,and%20a%20Floating%20Action%20Button.
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,13 +153,13 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             'Steps: ',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            ' 13,112',
+                            _steps,
                             style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -117,7 +172,7 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
                       child: LinearPercentIndicator(
                         lineHeight: 20,
-                        percent: 0.8,
+                        percent: int.parse(_steps)/15000,
                         linearStrokeCap: LinearStrokeCap.roundAll,
                         progressColor: Colors.black,
                       ),
@@ -154,13 +209,13 @@ class _HomeState extends State<Home> {
                         children: [
                           Text(
                             'Calories Burned: ',
-                            style: TextStyle(fontSize: 25),
+                            style: TextStyle(fontSize: 20),
                             textAlign: TextAlign.center,
                           ),
                           Text(
-                            ' 500',
+                            (0.063*int.parse(_steps)).toStringAsFixed(2),
                             style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center,
                           ),
                         ],
@@ -173,7 +228,7 @@ class _HomeState extends State<Home> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 10, 10),
                       child: LinearPercentIndicator(
                         lineHeight: 20,
-                        percent: 0.5,
+                        percent: (0.063*int.parse(_steps))/1000,
                         linearStrokeCap: LinearStrokeCap.roundAll,
                         progressColor: Colors.black,
                       ),
@@ -209,7 +264,7 @@ class _HomeState extends State<Home> {
                         Text(
                           'Pill Box',
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 25),
+                              fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         Spacer(),
                         IconButton(

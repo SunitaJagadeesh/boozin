@@ -1,7 +1,7 @@
 import 'package:boozin/view/add_medication_1.dart';
 import 'package:flutter/material.dart';
 
-class PillBox extends StatelessWidget {
+class PillBoxAdded extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -30,24 +30,16 @@ class PillBox extends StatelessWidget {
             SizedBox(
               height: size.height * 0.05,
             ),
-            Text(
-              'Welcome to Pill Box, here you \n '
-              ' can add your medication and set \n '
-              ' a reminder for them.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
-            ),
-            Text(
-              'Let us start with adding your \n '
-              ' first medication.',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(
-              height: size.height * 0.05,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              child: Row(
+                children: [
+                  Text(
+                    'Added Medication',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ],
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(45, 30, 45, 0),
@@ -61,7 +53,7 @@ class PillBox extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: Row(
                           children: [
-                            Text('Add Medication'),
+                            Text('Add new Medication'),
                             Spacer(),
                             Icon(Icons.arrow_forward_ios)
                           ],
@@ -78,7 +70,7 @@ class PillBox extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                         primary: Colors.black,
                         padding:
-                            EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                        EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                         textStyle: TextStyle(
                             fontSize: 18,
                             //fontWeight: FontWeight.bold,

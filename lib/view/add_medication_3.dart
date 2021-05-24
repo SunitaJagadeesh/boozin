@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 
 import 'add_medication_2.dart';
+import 'pill_box_added.dart';
 
-enum Routine {Weekly, Monthly}
+enum Routine { Weekly, Monthly }
+
 class AddMedication3 extends StatefulWidget {
   @override
   _AddMedication3State createState() => _AddMedication3State();
@@ -11,6 +13,11 @@ class AddMedication3 extends StatefulWidget {
 
 class _AddMedication3State extends State<AddMedication3> {
   Routine _schedule = Routine.Monthly;
+
+  bool _hasBeenPressed1 = false;
+  bool _hasBeenPressed2 = false;
+
+  bool _hasBeenPressedSave = false;
 
   DateTime selectedDate = DateTime.now();
 
@@ -26,7 +33,6 @@ class _AddMedication3State extends State<AddMedication3> {
         selectedDate = picked;
       });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,7 @@ class _AddMedication3State extends State<AddMedication3> {
         title: Text(
           'Add Medication',
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
         ),
       ),
       body: SingleChildScrollView(
@@ -56,11 +62,10 @@ class _AddMedication3State extends State<AddMedication3> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('Medicine Name',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87
-                    ),),
+                  child: Text(
+                    'Medicine Name',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
                 ),
               ],
             ),
@@ -69,27 +74,26 @@ class _AddMedication3State extends State<AddMedication3> {
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.grey.shade200,
-                    borderRadius: BorderRadius.circular(10)
-                ),
+                    borderRadius: BorderRadius.circular(10)),
                 child: TextFormField(
                   decoration: InputDecoration(
                       hintText: 'Enter name of your medicine',
                       contentPadding: EdgeInsets.fromLTRB(30, 15, 30, 15),
-                      border: InputBorder.none
-                  ),
+                      border: InputBorder.none),
                 ),
               ),
             ),
-            SizedBox(height: size.height * 0.03,),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('Select Medication routine',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87
-                    ),),
+                  child: Text(
+                    'Select Medication routine',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
                 ),
               ],
             ),
@@ -103,18 +107,17 @@ class _AddMedication3State extends State<AddMedication3> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-
                 Expanded(
                   child: RadioListTile(
                     value: Routine.Weekly,
                     groupValue: _schedule,
                     activeColor: Colors.black,
-                    title: Text('Weekly',
+                    title: Text(
+                      'Weekly',
                       style: TextStyle(
-                          color: Colors.black38,
-                          fontWeight: FontWeight.bold
-                      ),),
-                    onChanged: (Routine value){
+                          color: Colors.black38, fontWeight: FontWeight.bold),
+                    ),
+                    onChanged: (Routine value) {
                       setState(() {
                         _schedule = value;
                       });
@@ -128,16 +131,16 @@ class _AddMedication3State extends State<AddMedication3> {
                 ),
                 Expanded(
                   child: ListTile(
-                    title: Text('Monthly',
+                    title: Text(
+                      'Monthly',
                       style: TextStyle(
-                          color: Colors.black38,
-                          fontWeight: FontWeight.bold
-                      ),),
+                          color: Colors.black38, fontWeight: FontWeight.bold),
+                    ),
                     leading: Radio(
                       value: Routine.Monthly,
                       groupValue: _schedule,
                       activeColor: Colors.black,
-                      onChanged: (Routine value){
+                      onChanged: (Routine value) {
                         setState(() {
                           _schedule = value;
                         });
@@ -155,12 +158,54 @@ class _AddMedication3State extends State<AddMedication3> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('Select Date',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87
-                    ),),
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: _hasBeenPressed1
+                              ? Colors.black
+                              : Colors.grey.shade200,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _hasBeenPressed1 = !_hasBeenPressed1;
+                          });
+                        },
+                        child: Text(
+                          'Once a Month',
+                          style: TextStyle(
+                            color: _hasBeenPressed1
+                                ? Colors.white
+                                : Colors.black54,
+                          ),
+                        )),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: _hasBeenPressed2
+                              ? Colors.black
+                              : Colors.grey.shade200,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _hasBeenPressed2 = !_hasBeenPressed2;
+                          });
+                        },
+                        child: Text(
+                          'Twice a Month',
+                          style: TextStyle(
+                            color: _hasBeenPressed2
+                                ? Colors.white
+                                : Colors.black54,
+                          ),
+                        )),
+                  ),
                 ),
               ],
             ),
@@ -168,52 +213,64 @@ class _AddMedication3State extends State<AddMedication3> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('Select date on which you take your Monthly medicine',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black26
-                    ),),
+                  child: Text(
+                    'Select Date',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Text(
+                    'Select date on which you take your Monthly medicine',
+                    style: TextStyle(fontSize: 10, color: Colors.black26),
+                  ),
                 ),
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
                   Text(
                     "${selectedDate.toLocal()}".split(' ')[0],
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 18),
                   ),
                   Spacer(),
-                  ElevatedButton(
+                  TextButton(
                       onPressed: () => _selectDate(context),
-                      child: Text('Change Date'))
+                      child: Text(
+                        'Change Date',
+                        style: TextStyle(color: Colors.black),
+                      ))
                 ],
               ),
             ),
-            SizedBox(height: size.height*0.03,),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('Select time at which you take medicine',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black87
-                    ),),
+                  child: Text(
+                    'Select time at which you take medicine',
+                    style: TextStyle(fontSize: 18, color: Colors.black87),
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: size.height*0.01,),
+            SizedBox(
+              height: size.height * 0.01,
+            ),
             Row(
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                  child: Text('You can change the time to match your schedule.',
-                    style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.black26
-                    ),),
+                  child: Text(
+                    'You can change the time to match your schedule.',
+                    style: TextStyle(fontSize: 10, color: Colors.black26),
+                  ),
                 ),
               ],
             ),
@@ -224,16 +281,18 @@ class _AddMedication3State extends State<AddMedication3> {
                 "Evening",
                 "Night",
               ],
-              onChange: (bool isChecked, String label, int index) {
-
-              },
+              onChange: (bool isChecked, String label, int index) {},
               onSelected: (List<String> checked) {
-
+                setState(() {
+                  _hasBeenPressedSave = !_hasBeenPressedSave;
+                });
               },
               checkColor: Colors.black,
               activeColor: Colors.grey.shade50,
             ),
-            SizedBox(height: size.height* 0.02,),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
               child: Row(
@@ -242,13 +301,16 @@ class _AddMedication3State extends State<AddMedication3> {
                       onTap: () {},
                       child: Container(
                         child: Image.asset('assets/add_icon.png'),
-                      )
+                      )),
+                  SizedBox(
+                    width: size.width * 0.04,
                   ),
-                  SizedBox(width: size.width*0.04,),
-                  Text('Add new time',
+                  Text(
+                    'Add new time',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                    ),)
+                    ),
+                  )
                 ],
               ),
             ),
@@ -263,32 +325,40 @@ class _AddMedication3State extends State<AddMedication3> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Save',
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: 20
-                            ),),
-                          SizedBox(width: size.width * 0.05,),
-                          Icon(Icons.arrow_forward_ios,
-                            color: Colors.black54,)
+                          Text(
+                            'Save',
+                            style:
+                                TextStyle(color: Colors.black54, fontSize: 18),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.05,
+                          ),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black54,
+                          )
                         ],
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PillBoxAdded()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Colors.grey.shade200,
                       padding:
-                      EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                     ),
                   ),
                 ),
               ),
             )
-
           ],
         ),
       ),
     );
   }
 }
-
