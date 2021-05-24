@@ -390,7 +390,10 @@ class _AddMedication2State extends State<AddMedication2> {
               onChange: (bool isChecked, String label, int index) {},
               onSelected: (List<String> checked) {
                 setState(() {
-                  _hasBeenPressedSave = !_hasBeenPressedSave;
+                  if(checked.isEmpty)
+                    _hasBeenPressedSave = false;
+                  else
+                    _hasBeenPressedSave = true;
                 });
               },
               checkColor: Colors.black,
